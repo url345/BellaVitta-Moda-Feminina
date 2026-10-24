@@ -47,7 +47,7 @@ h2{font-size:22px;margin:20px 0 12px}
 .btn{border:0;border-radius:8px;padding:12px 14px;background:var(--rose);color:#fff;font-weight:600;width:100%}
 .btn.alt{background:var(--fg);color:var(--bg)}
 .btn.out{background:none;color:var(--fg);border:1px solid var(--fg)}
-.sizes{display:flex;gap:8px;flex-wrap:wrap}.sizes .chip{min-width:52px;padding:10px 0;text-align:center}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}.sizes .chip{min-width:52px;padding:10px 14px;text-align:center}
 .cs{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--card)}
 .cs h4{margin:0;font-size:16px}
 .fl{display:flex;flex-direction:column;gap:4px;font-size:14px}
@@ -113,6 +113,7 @@ const COUPONS={}; /* exemplo: "BEMVINDA10":{pct:10} */
 const CATS=["Todos","Baby Dolls","Shorts Femininos","Conjuntos","Pijamas","Moda Verão","Mais Vendidos","Ofertas"];
 /* promo: preço promocional opcional; o desconto é calculado automaticamente */
 const PRODUCTS=[
+ {id:5,name:"Kit com 5 Baby Dolls",img:"file_00000000fed0820e8133906b1004d4c7.png",price:null,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Rosa-claro","Preto","Azul","Pink","Branco"],desc:"Kit com 5 baby dolls nas cores: rosa-claro, preto, azul, pink e branco. 💗"},
  {id:1,name:"Kit 3 Baby Dolls Femininos",price:57.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Kit com três peças para proporcionar conforto e praticidade na hora de dormir. Modelos, cores e estampas sujeitos às opções disponíveis."},
  {id:2,name:"Short Feminino de Verão",price:23.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Short feminino leve e confortável, ideal para aproveitar os dias quentes. Consulte as estampas e os tamanhos disponíveis."},
  {id:3,name:"Kit 3 Baby Dolls com Short",price:57.80,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Conjunto com três peças de dormir, pensado para oferecer conforto no dia a dia. Confira a composição do tecido, as medidas e as opções disponíveis."},
@@ -137,8 +138,9 @@ const $=s=>document.querySelector(s);
 const R=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const cur=p=>p.promo&&p.promo<p.price?p.promo:p.price;
 const pct=p=>p.promo&&p.promo<p.price?Math.round((1-p.promo/p.price)*100):0;
-const ph=p=>`<div class="ph"><div><b>BellaVitta</b><br>Foto do produto</div></div>`;
-function priceHtml(p){return pct(p)?`<span class="old">${R(p.price)}</span><span class="price">${R(p.promo)}</span> <span class="off">${pct(p)}% off</span>`:`<span class="price">${R(p.price)}</span>`}
+const pimg=p=>p.img?`<img src="${p.img}" alt="${p.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">`:"";
+const ph=p=>`<div class="ph"><div><b>BellaVitta</b><br>Foto do produto</div>${pimg(p)}</div>`;
+function priceHtml(p){if(p.price==null)return`<span class="price">Preço a definir</span>`;return pct(p)?`<span class="old">${R(p.price)}</span><span class="price">${R(p.promo)}</span> <span class="off">${pct(p)}% off</span>`:`<span class="price">${R(p.price)}</span>`}
 function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;(dlg.open?dlg:document.body).append(t);setTimeout(()=>t.remove(),1800)}
 /* ===== VITRINE ===== */
 function go(c){cat=c;$("#q").value="";render();scrollTo({top:0,behavior:"smooth"})}
@@ -146,7 +148,7 @@ function list(){const q=$("#q").value.trim().toLowerCase();return PRODUCTS.filte
 function render(arr){
  $("#cats").innerHTML=CATS.map(c=>`<button class="chip" aria-pressed="${c===cat}" onclick="go('${c}')">${c}</button>`).join("");
  const a=arr||list();$("#title").textContent=arr?"Favoritos":(cat==="Todos"?"Todos os produtos":cat);
- $("#grid").innerHTML=a.map(p=>`<article class="card"><div class="ph" onclick="openP(${p.id})" style="cursor:pointer"><div><b>BellaVitta</b><br>Foto do produto</div><button class="fav" aria-label="Favoritar" onclick="event.stopPropagation();fav(${p.id})">${favs.includes(p.id)?"♥":"♡"}</button></div><div class="info"><button class="name" onclick="openP(${p.id})">${p.name}</button><div>${priceHtml(p)}</div><button class="btn" onclick="quick(${p.id})">Adicionar ao carrinho</button></div></article>`).join("");
+ $("#grid").innerHTML=a.map(p=>`<article class="card"><div class="ph" onclick="openP(${p.id})" style="cursor:pointer"><div><b>BellaVitta</b><br>Foto do produto</div>${pimg(p)}<button class="fav" aria-label="Favoritar" onclick="event.stopPropagation();fav(${p.id})">${favs.includes(p.id)?"♥":"♡"}</button></div><div class="info"><button class="name" onclick="openP(${p.id})">${p.name}</button><div>${priceHtml(p)}</div><button class="btn" onclick="quick(${p.id})">Adicionar ao carrinho</button></div></article>`).join("");
  $("#empty").hidden=a.length>0;
  $("#cc").textContent=cart.reduce((s,i)=>s+i.q,0);
  $("#foot").innerHTML=Object.keys(PAGES).filter(k=>k!=="conta").map(k=>`<button onclick="info('${k}')">${PAGES[k][0]}</button>`).join("");
@@ -160,7 +162,7 @@ function openP(id){
  const p=PRODUCTS.find(x=>x.id===id);
  show(`${ph(p)}<h3>${p.name}</h3><div>${priceHtml(p)}</div><p>${p.desc}</p>
  <div>Tamanho</div><input type="hidden" id="sz"><div class="sizes">${p.sizes.map(s=>`<button type="button" class="chip sz" aria-pressed="false" onclick="pick(this,'${s}')">${s}</button>`).join("")}</div>
- <label>Cor / estampa<select id="co">${p.colors.length>1?`<option value="">Selecione</option>`:""}${p.colors.map(s=>`<option>${s}</option>`).join("")}</select></label>
+ <div>Cor / estampa</div><input type="hidden" id="co" value="${p.colors.length==1?p.colors[0]:""}"><div class="sizes">${p.colors.map(s=>`<button type="button" class="chip cc" aria-pressed="${p.colors.length==1}" onclick="pickC(this,'${s}')">${s}</button>`).join("")}</div>
  <label>Quantidade<input class="f" id="qt" type="number" min="1" value="1"></label>
  <p class="note">Tabela de medidas e composição do tecido: a loja informará aqui quando confirmadas. O frete será calculado antes do pagamento.</p>
  <div id="err" role="alert" style="color:var(--rose)"></div>
@@ -169,9 +171,11 @@ function openP(id){
  <p class="note">Pagamento e devolução: veja Trocas, Devoluções e Reembolsos no rodapé.</p>`);
 }
 function pick(b,s){$("#sz").value=s;document.querySelectorAll(".sz").forEach(x=>x.setAttribute("aria-pressed",x===b))}
+function pickC(b,v){$("#co").value=v;document.querySelectorAll(".cc").forEach(x=>x.setAttribute("aria-pressed",x===b))}
 function quick(id){openP(id)}
 function addSel(id,buy){
  const s=$("#sz").value,c=$("#co").value,q=Math.max(1,parseInt($("#qt").value)||1);
+ if(PRODUCTS.find(x=>x.id===id).price==null){$("#err").textContent="O preço deste produto ainda não foi definido pela loja.";return}
  if(!s||!c){const e=$("#err");e.textContent=!s?"Escolha um tamanho para continuar.":"Escolha a cor ou estampa.";e.scrollIntoView({block:"center"});return}
  const f=cart.find(i=>i.id===id&&i.s===s&&i.c===c);f?f.q+=q:cart.push({id,s,c,q});
  save();render();toast("Adicionado ao carrinho");buy?checkout():dlg.close();
