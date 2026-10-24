@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BellaVitta — Moda Feminina</title>
+<meta name="description" content="Baby dolls, shorts, pijamas e conjuntos femininos. BellaVitta — Moda Feminina.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,600&display=swap">
+<style>
+:root{--bg:#fff;--fg:#111;--mut:#6b6b6b;--pink:#fbe3ea;--rose:#b3184f;--line:#ead9df;--card:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17110f;--fg:#f6eef1;--mut:#b9a9af;--pink:#3a2029;--rose:#ff6f9f;--line:#3b2a31;--card:#201719;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17110f;--fg:#f6eef1;--mut:#b9a9af;--pink:#3a2029;--rose:#ff6f9f;--line:#3b2a31;--card:#201719;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.5 Jost,system-ui,sans-serif;padding-bottom:72px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;gap:12px;padding:10px 16px;max-width:1100px;margin:auto}
+.logo{font:italic 600 28px Cormorant Garamond,Georgia,serif;color:var(--rose);border:0;background:none;padding:0;white-space:nowrap}
+.search{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:10px 16px;background:var(--card);color:var(--fg)}
+.ic{border:0;background:none;position:relative;padding:6px;font-size:20px}
+.badge{position:absolute;top:-2px;right:-4px;background:var(--rose);color:#fff;border-radius:999px;font-size:11px;min-width:18px;height:18px;line-height:18px;text-align:center}
+.desk{display:none}
+.banner{background:var(--pink);padding:28px 16px;text-align:center}
+.banner h1{margin:0 0 6px;font-size:clamp(24px,5vw,38px);font-weight:600}
+.banner p{margin:0;color:var(--mut)}
+.benefits{display:flex;gap:8px 24px;justify-content:center;flex-wrap:wrap;padding:10px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+.benefits span::before{content:"✓ ";color:var(--rose)}
+main{max-width:1100px;margin:auto;padding:16px}
+.cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px}
+.chip[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+h2{font-size:22px;margin:20px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.desk{display:flex;gap:16px}.bot{display:none!important}body{padding-bottom:0}}
+@media(min-width:1000px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden;display:flex;flex-direction:column}
+.ph{aspect-ratio:1;background:linear-gradient(135deg,var(--pink),var(--bg));display:grid;place-items:center;text-align:center;color:var(--rose);font-size:13px;padding:8px;position:relative}
+.ph b{font:italic 600 34px Cormorant Garamond,Georgia,serif}
+.fav{position:absolute;top:6px;right:6px;border:0;background:var(--card);border-radius:50%;width:34px;height:34px}
+.info{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
+.name{border:0;background:none;text-align:left;padding:0;font-weight:500}
+.price{font-size:20px;font-weight:600}
+.old{color:var(--mut);text-decoration:line-through;font-size:14px;margin-right:6px}
+.off{color:var(--rose);font-size:14px}
+.btn{border:0;border-radius:8px;padding:12px 14px;background:var(--rose);color:#fff;font-weight:600;width:100%}
+.btn.alt{background:var(--fg);color:var(--bg)}
+.btn.out{background:none;color:var(--fg);border:1px solid var(--fg)}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}.sizes .chip{min-width:52px;padding:10px 0;text-align:center}
+.cs{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--card)}
+.cs h4{margin:0;font-size:16px}
+.fl{display:flex;flex-direction:column;gap:4px;font-size:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{display:flex;gap:10px;align-items:center;border:1.5px solid var(--rose);border-radius:10px;padding:12px;background:var(--pink)}
+.calc{display:flex;gap:10px;align-items:center;color:var(--mut)}
+.spin{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--rose);border-radius:50%;display:inline-block}
+@media(prefers-reduced-motion:no-preference){.spin{animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}}
+.empty{color:var(--mut);padding:24px 0}
+dialog{border:0;border-radius:14px;padding:0;width:min(520px,calc(100% - 24px));max-height:90dvh;background:var(--bg);color:var(--fg)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+@media(max-width:699px){dialog{width:100%;max-width:100%;height:100dvh;max-height:100dvh;border-radius:0}.dlg{padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px))}.dlg>.ph{margin:0 -16px;border-radius:0}}
+.dlg{padding:18px;display:flex;flex-direction:column;gap:12px}
+.dlg h3{margin:0;font-size:22px}
+.x{align-self:flex-end;border:0;background:none;font-size:22px}
+select,input.f{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--card);color:var(--fg);font:inherit}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card)}
+.line{display:flex;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.line .ph{width:64px;aspect-ratio:1;flex:none;border-radius:8px;font-size:0}
+.line .ph b{font-size:22px}
+.note{font-size:13px;color:var(--mut)}
+.bot{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:6}
+.bot button{flex:1;border:0;background:none;padding:10px 0 8px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+.bot span{font-size:20px}
+footer{border-top:1px solid var(--line);padding:20px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;font-size:14px}
+footer button{border:0;background:none;text-decoration:underline;color:var(--mut)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;z-index:20}
+@media(prefers-reduced-motion:no-preference){.toast{animation:t .2s}@keyframes t{from{opacity:0}}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top">
+  <button class="logo" onclick="go('Todos')">BellaVitta</button>
+  <input class="search" id="q" type="search" placeholder="O que você está procurando?" aria-label="Pesquisar" oninput="render()">
+  <div class="desk"><button class="ic" onclick="showFavs()" aria-label="Favoritos">♡</button><button class="ic" onclick="info('conta')" aria-label="Minha conta">☺</button></div>
+  <button class="ic" onclick="openCart()" aria-label="Carrinho">🛍<span class="badge" id="cc">0</span></button>
+ </div>
+</header>
+<div class="banner"><h1>Sua próxima peça favorita está aqui</h1><p>Baby dolls, shorts, pijamas e conjuntos femininos</p></div>
+<div class="benefits"><span>Ofertas especiais</span><span>Compra segura</span><span>Consulte as opções de entrega</span></div>
+<main>
+ <div class="cats" id="cats"></div>
+ <h2 id="title">Todos os produtos</h2>
+ <div class="grid" id="grid"></div>
+ <div class="empty" id="empty" hidden>Nenhum produto nesta categoria ainda. Volte em breve.</div>
+</main>
+<footer id="foot"></footer>
+<nav class="bot" aria-label="Menu principal">
+ <button onclick="go('Todos')"><span>⌂</span>Início</button>
+ <button onclick="document.getElementById('cats').scrollIntoView({behavior:'smooth'})"><span>☰</span>Categorias</button>
+ <button onclick="showFavs()"><span>♡</span>Favoritos</button>
+ <button onclick="openCart()"><span>🛍</span>Carrinho</button>
+ <button onclick="info('conta')"><span>☺</span>Minha conta</button>
+</nav>
+<dialog id="dlg"><div class="dlg" id="dbody"></div></dialog>
+<script>
+/* ===== CONFIGURAÇÃO DA LOJA (edite aqui) ===== */
+const STORE={cnpj:"",endereco:"",telefone:"",email:""};
+const COUPONS={}; /* exemplo: "BEMVINDA10":{pct:10} */
+const CATS=["Todos","Baby Dolls","Shorts Femininos","Conjuntos","Pijamas","Moda Verão","Mais Vendidos","Ofertas"];
+/* promo: preço promocional opcional; o desconto é calculado automaticamente */
+const PRODUCTS=[
+ {id:1,name:"Kit 3 Baby Dolls Femininos",price:57.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Kit com três peças para proporcionar conforto e praticidade na hora de dormir. Modelos, cores e estampas sujeitos às opções disponíveis."},
+ {id:2,name:"Short Feminino de Verão",price:23.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Short feminino leve e confortável, ideal para aproveitar os dias quentes. Consulte as estampas e os tamanhos disponíveis."},
+ {id:3,name:"Kit 3 Baby Dolls com Short",price:57.80,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Conjunto com três peças de dormir, pensado para oferecer conforto no dia a dia. Confira a composição do tecido, as medidas e as opções disponíveis."},
+ {id:4,name:"Kit 3 Shorts Femininos Estampados",price:37.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Kit com três shorts femininos estampados, ideal para compor looks casuais de verão. Consulte a tabela de medidas antes de comprar."}
+];
+const PAGES={
+ conta:["Minha conta","O login de clientes será ativado quando a loja tiver banco de dados conectado."],
+ sobre:["Sobre a BellaVitta","BellaVitta — Moda Feminina vende baby dolls, shorts, pijamas e conjuntos. Texto institucional a ser preenchido pela loja."],
+ contato:["Contato e atendimento","Os canais de atendimento serão informados aqui pela loja (configure em STORE no código)."],
+ faq:["Perguntas frequentes","Perguntas e respostas a serem cadastradas pela loja."],
+ priv:["Política de Privacidade","Texto a ser definido pela loja, conforme a LGPD."],
+ termos:["Termos de Uso","Texto a ser definido pela loja."],
+ entrega:["Política de Entrega","Valores e prazos de frete serão informados ao cliente antes do pagamento. As opções de entrega ainda não estão conectadas a uma cotação automática."],
+ trocas:["Trocas, Devoluções e Reembolsos","Nas compras feitas fora do estabelecimento comercial, você pode exercer o direito de arrependimento em até 7 dias, conforme a legislação. Para solicitar, entre em contato informando o número do pedido; você receberá as instruções de postagem e poderá acompanhar o reembolso. Produtos com defeito seguem os direitos e prazos do Código de Defesa do Consumidor."],
+ rastreio:["Acompanhamento de pedido","O rastreio ficará disponível quando os pedidos forem conectados ao sistema da loja."]
+};
+/* ===== ESTADO ===== */
+let cat="Todos",cart=[],favs=[];
+try{cart=JSON.parse(localStorage.getItem("bv_cart")||"[]");favs=JSON.parse(localStorage.getItem("bv_favs")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("bv_cart",JSON.stringify(cart));localStorage.setItem("bv_favs",JSON.stringify(favs))}catch(e){}};
+const $=s=>document.querySelector(s);
+const R=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const cur=p=>p.promo&&p.promo<p.price?p.promo:p.price;
+const pct=p=>p.promo&&p.promo<p.price?Math.round((1-p.promo/p.price)*100):0;
+const ph=p=>`<div class="ph"><div><b>BellaVitta</b><br>Foto do produto</div></div>`;
+function priceHtml(p){return pct(p)?`<span class="old">${R(p.price)}</span><span class="price">${R(p.promo)}</span> <span class="off">${pct(p)}% off</span>`:`<span class="price">${R(p.price)}</span>`}
+function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;(dlg.open?dlg:document.body).append(t);setTimeout(()=>t.remove(),1800)}
+/* ===== VITRINE ===== */
+function go(c){cat=c;$("#q").value="";render();scrollTo({top:0,behavior:"smooth"})}
+function list(){const q=$("#q").value.trim().toLowerCase();return PRODUCTS.filter(p=>(cat==="Todos"||(cat==="Ofertas"?pct(p)>0:p.cats.includes(cat)))&&(!q||p.name.toLowerCase().includes(q)))}
+function render(arr){
+ $("#cats").innerHTML=CATS.map(c=>`<button class="chip" aria-pressed="${c===cat}" onclick="go('${c}')">${c}</button>`).join("");
+ const a=arr||list();$("#title").textContent=arr?"Favoritos":(cat==="Todos"?"Todos os produtos":cat);
+ $("#grid").innerHTML=a.map(p=>`<article class="card"><div class="ph" onclick="openP(${p.id})" style="cursor:pointer"><div><b>BellaVitta</b><br>Foto do produto</div><button class="fav" aria-label="Favoritar" onclick="event.stopPropagation();fav(${p.id})">${favs.includes(p.id)?"♥":"♡"}</button></div><div class="info"><button class="name" onclick="openP(${p.id})">${p.name}</button><div>${priceHtml(p)}</div><button class="btn" onclick="quick(${p.id})">Adicionar ao carrinho</button></div></article>`).join("");
+ $("#empty").hidden=a.length>0;
+ $("#cc").textContent=cart.reduce((s,i)=>s+i.q,0);
+ $("#foot").innerHTML=Object.keys(PAGES).filter(k=>k!=="conta").map(k=>`<button onclick="info('${k}')">${PAGES[k][0]}</button>`).join("");
+}
+function fav(id){favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];save();render()}
+function showFavs(){cat="Todos";render(PRODUCTS.filter(p=>favs.includes(p.id)));scrollTo({top:0,behavior:"smooth"})}
+/* ===== MODAIS ===== */
+function show(h){$("#dbody").innerHTML=`<button class="x" onclick="dlg.close()" aria-label="Fechar">✕</button>`+h;if(!dlg.open)dlg.showModal()}
+function info(k){const[t,b]=PAGES[k];show(`<h3>${t}</h3><p>${b}</p>`)}
+function openP(id){
+ const p=PRODUCTS.find(x=>x.id===id);
+ show(`${ph(p)}<h3>${p.name}</h3><div>${priceHtml(p)}</div><p>${p.desc}</p>
+ <div>Tamanho</div><input type="hidden" id="sz"><div class="sizes">${p.sizes.map(s=>`<button type="button" class="chip sz" aria-pressed="false" onclick="pick(this,'${s}')">${s}</button>`).join("")}</div>
+ <label>Cor / estampa<select id="co">${p.colors.length>1?`<option value="">Selecione</option>`:""}${p.colors.map(s=>`<option>${s}</option>`).join("")}</select></label>
+ <label>Quantidade<input class="f" id="qt" type="number" min="1" value="1"></label>
+ <p class="note">Tabela de medidas e composição do tecido: a loja informará aqui quando confirmadas. O frete será calculado antes do pagamento.</p>
+ <div id="err" role="alert" style="color:var(--rose)"></div>
+ <button class="btn" onclick="addSel(${p.id},false)">Adicionar ao carrinho</button>
+ <button class="btn alt" onclick="addSel(${p.id},true)">Comprar agora</button>
+ <p class="note">Pagamento e devolução: veja Trocas, Devoluções e Reembolsos no rodapé.</p>`);
+}
+function pick(b,s){$("#sz").value=s;document.querySelectorAll(".sz").forEach(x=>x.setAttribute("aria-pressed",x===b))}
+function quick(id){openP(id)}
+function addSel(id,buy){
+ const s=$("#sz").value,c=$("#co").value,q=Math.max(1,parseInt($("#qt").value)||1);
+ if(!s||!c){const e=$("#err");e.textContent=!s?"Escolha um tamanho para continuar.":"Escolha a cor ou estampa.";e.scrollIntoView({block:"center"});return}
+ const f=cart.find(i=>i.id===id&&i.s===s&&i.c===c);f?f.q+=q:cart.push({id,s,c,q});
+ save();render();toast("Adicionado ao carrinho");buy?checkout():dlg.close();
+}
+/* ===== CARRINHO ===== */
+let coupon=null;
+function openCart(){
+ if(!cart.length){show(`<h3>Carrinho</h3><p class="empty">Seu carrinho está vazio.</p><button class="btn" onclick="dlg.close()">Continuar comprando</button>`);return}
+ let sub=0;
+ const rows=cart.map((i,n)=>{const p=PRODUCTS.find(x=>x.id===i.id);sub+=cur(p)*i.q;return`<div class="line">${ph(p)}<div style="flex:1"><div>${p.name}</div><div class="note">${i.s} · ${i.c}</div><div class="row"><div class="qty"><button aria-label="Diminuir" onclick="chg(${n},-1)">−</button>${i.q}<button aria-label="Aumentar" onclick="chg(${n},1)">+</button></div><b>${R(cur(p)*i.q)}</b></div><button class="note" style="border:0;background:none;text-decoration:underline;padding:0" onclick="chg(${n},-99)">Remover</button></div></div>`}).join("");
+ const disc=coupon?sub*coupon.pct/100:0;
+ show(`<h3>Carrinho</h3>${rows}
+ <div class="row"><input class="f" id="cp" placeholder="Cupom de desconto"><button class="btn out" style="width:auto" onclick="applyC()">Aplicar</button></div>
+ <div class="row"><span>Subtotal</span><b>${R(sub)}</b></div>
+ ${disc?`<div class="row"><span>Desconto do cupom</span><b>−${R(disc)}</b></div>`:""}
+ <div class="row"><span>Frete</span>${SHIPPING.length==1?`<b>${R(SHIPPING[0].preco)}</b>`:`<span class="note">Calculado na etapa de entrega</span>`}</div>
+ <div class="row"><span>Total</span><b class="price">${R(sub-disc+(SHIPPING.length==1?SHIPPING[0].preco:0))}</b></div>
+ <button class="btn" onclick="checkout()">Finalizar compra</button>
+ <button class="btn out" onclick="dlg.close()">Continuar comprando</button>`);
+}
+function chg(n,d){cart[n].q+=d;if(cart[n].q<1)cart.splice(n,1);save();render();openCart()}
+function applyC(){const c=COUPONS[$("#cp").value.trim().toUpperCase()];if(!c){toast("Cupom inválido");return}coupon=c;openCart();toast("Cupom aplicado")}
+const SHIPPING=[{nome:"Frete fixo",transp:"",preco:9,prazo:"5 a 10 dias"}]; /* ex.: {nome:"SEDEX",transp:"Correios",preco:25,prazo:"3 a 5 dias úteis"} */
+let ck={ship:SHIPPING.length?0:null,ready:false},tm;
+const dg=s=>(s||"").replace(/\D/g,"");
+const esc=s=>String(s||"").replace(/[&<>"]/g,c=>"&#"+c.charCodeAt(0)+";");
+const mask={
+ cpf:v=>{v=dg(v).slice(0,11);return v.replace(/^(\d{3})(\d{0,3})(\d{0,3})(\d{0,2}).*/,(m,a,b,c,d)=>a+(b?"."+b:"")+(c?"."+c:"")+(d?"-"+d:""))},
+ tel:v=>{v=dg(v).slice(0,11);if(v.length<3)return v;const k=v.length>10?7:6;return "("+v.slice(0,2)+") "+v.slice(2,k)+(v.length>k?"-"+v.slice(k):"")},
+ cep:v=>{v=dg(v).slice(0,8);return v.length>5?v.slice(0,5)+"-"+v.slice(5):v}
+};
+const IDS=["nm","cpf","tel","em","cep","rua","num","comp","bai","cid","uf","ref"];
+function cpfOk(c){c=dg(c);if(c.length!==11||/^(\d)\1+$/.test(c))return false;for(let t=9;t<11;t++){let s=0;for(let i=0;i<t;i++)s+=c[i]*(t+1-i);if((s*10%11)%10!=c[t])return false}return true}
+function tot(){let sub=0;cart.forEach(i=>{sub+=cur(PRODUCTS.find(x=>x.id===i.id))*i.q});const d=coupon?sub*coupon.pct/100:0;const f=ck.ready&&ck.ship!=null?SHIPPING[ck.ship].preco:0;return{sub,d,f,t:sub-d+f}}
+function grab(){IDS.forEach(id=>{const e=$("#"+id);if(e)ck[id]=e.value.trim()})}
+function inp(e,k){e.value=mask[k](e.value);ck[e.id]=e.value}
+const fld=(id,l,a)=>`<label class="fl"><span>${l}</span><input class="f" id="${id}" ${a||""} value="${esc(ck[id])}"></label>`;
+function checkout(){
+ if(!cart.length){openCart();return}
+ show(`<h3>Finalizar compra</h3>
+ <section class="cs"><h4>1. Seus dados</h4>
+  ${fld("nm","Nome completo",'autocomplete="name"')}
+  ${fld("cpf","CPF",`inputmode="numeric" maxlength="14" placeholder="000.000.000-00" autocomplete="off" oninput="inp(this,'cpf')"`)}
+  ${fld("tel","Celular com DDD",`type="tel" inputmode="numeric" maxlength="15" placeholder="(00) 00000-0000" autocomplete="tel" oninput="inp(this,'tel')"`)}
+  ${fld("em","E-mail (opcional)",'type="email" autocomplete="email"')}
+ </section>
+ <section class="cs"><h4>2. Endereço de entrega</h4>
+  ${fld("cep","CEP",`inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" oninput="inp(this,'cep');cepChange()"`)}
+  ${fld("rua","Rua ou avenida")}
+  <div class="g2">${fld("num","Número",'inputmode="numeric" maxlength="8"')}${fld("comp","Complemento (opcional)")}</div>
+  ${fld("bai","Bairro")}
+  <div class="g2">${fld("cid","Cidade")}${fld("uf","Estado (UF)",'maxlength="2" autocapitalize="characters"')}</div>
+  ${fld("ref","Referência (opcional)")}
+ </section>
+ <section class="cs"><h4>3. Entrega</h4><div id="dv"><p class="note">Digite o CEP para calcular a entrega.</p></div></section>
+ <section class="cs"><h4>4. Resumo do pedido</h4><div id="sm"></div></section>
+ <div id="err" role="alert"></div>
+ <button class="btn" onclick="pay()">Pagar com Pix</button>
+ <button class="btn out" onclick="grab();openCart()">Voltar ao carrinho</button>`);
+ ck.ready=false;upd();if(dg(ck.cep).length===8)deliv(true);
+}
+function upd(){
+ const t=tot();
+ $("#sm").innerHTML=cart.map(i=>{const p=PRODUCTS.find(x=>x.id===i.id);return`<div class="row"><span>${i.q}× ${p.name} <span class="note">${i.s} · ${i.c}</span></span><b>${R(cur(p)*i.q)}</b></div>`}).join("")
+ +`<div class="row"><span>Subtotal</span><b>${R(t.sub)}</b></div>`+(t.d?`<div class="row"><span>Cupom</span><b>−${R(t.d)}</b></div>`:"")
+ +`<div class="row"><span>Frete</span><b>${ck.ready&&ck.ship!=null?R(t.f):"Informe o CEP"}</b></div><div class="row"><span>Total</span><b class="price">${R(t.t)}</b></div>`;
+}
+function cepChange(){
+ clearTimeout(tm);ck.ready=false;
+ if(dg(ck.cep).length<8){$("#dv").innerHTML=`<p class="note">Digite o CEP para calcular a entrega.</p>`;upd();return}
+ deliv(false);fillCep(dg(ck.cep));
+}
+function deliv(instant){
+ if(!SHIPPING.length){$("#dv").innerHTML=`<p class="note">A loja informará valor e prazo da entrega antes de qualquer cobrança.</p>`;ck.ready=true;upd();return}
+ if(instant){showShip();return}
+ $("#dv").innerHTML=`<div class="calc"><i class="spin"></i> Calculando rota de entrega…</div>`;upd();
+ const c=ck.cep;tm=setTimeout(()=>{if(ck.cep===c)showShip()},1300);
+}
+function showShip(){
+ ck.ready=true;if(ck.ship==null)ck.ship=0;
+ $("#dv").innerHTML=SHIPPING.map((s,n)=>`<label class="opt"><input type="radio" name="sh" ${ck.ship===n?"checked":""} onchange="ck.ship=${n};upd()"><span style="flex:1"><b>${s.nome}</b><br><span class="note">${s.transp?s.transp+" · ":""}${s.prazo}</span></span><b>${R(s.preco)}</b></label>`).join("");
+ upd();
+}
+async function fillCep(c){
+ try{const r=await fetch(`https://viacep.com.br/ws/${c}/json/`);const d=await r.json();if(d.erro||dg(ck.cep)!==c)return;
+ [["rua",d.logradouro],["bai",d.bairro],["cid",d.localidade],["uf",d.uf]].forEach(([k,v])=>{const e=$("#"+k);if(e&&v&&!e.value){e.value=v;ck[k]=v}})}catch(e){}
+}
+function pay(){
+ grab();let e="";
+ if(ck.nm.split(" ").filter(Boolean).length<2)e="Informe nome e sobrenome.";
+ else if(!cpfOk(ck.cpf))e="CPF inválido.";
+ else if(dg(ck.tel).length!==11)e="O celular deve ter DDD e 9 dígitos.";
+ else if(ck.em&&!/^\S+@\S+\.\S+$/.test(ck.em))e="E-mail inválido.";
+ else if(dg(ck.cep).length!==8)e="O CEP deve ter 8 números.";
+ else if(!ck.rua||!ck.num||!ck.bai||!ck.cid)e="Preencha rua, número, bairro e cidade.";
+ else if(!/^[A-Za-z]{2}$/.test(ck.uf))e="Informe o estado com 2 letras.";
+ else if(!ck.ready)e="Aguarde o cálculo da entrega.";
+ const el=$("#err");el.style.color=e?"var(--rose)":"var(--fg)";
+ el.textContent=e||"O Pix ainda não está conectado a um gateway de pagamento. Nenhum pedido foi criado e nenhuma cobrança foi feita.";
+ el.scrollIntoView({block:"center"});
+}
+render();
+</script>
+</body>
+</html>
