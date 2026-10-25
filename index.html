@@ -39,6 +39,7 @@ h2{font-size:22px;margin:20px 0 12px}
 .ph{aspect-ratio:1;background:linear-gradient(135deg,var(--pink),var(--bg));display:grid;place-items:center;text-align:center;color:var(--rose);font-size:13px;padding:8px;position:relative}
 .ph b{font:italic 600 34px Cormorant Garamond,Georgia,serif}
 .fav{position:absolute;top:6px;right:6px;border:0;background:var(--card);border-radius:50%;width:34px;height:34px}
+.tag{position:absolute;top:6px;left:6px;background:var(--rose);color:#fff;font-size:12px;padding:2px 8px;border-radius:999px}
 .info{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
 .name{border:0;background:none;text-align:left;padding:0;font-weight:500}
 .price{font-size:20px;font-weight:600}
@@ -76,6 +77,7 @@ select,input.f{width:100%;border:1px solid var(--line);border-radius:8px;padding
 .bot span{font-size:20px}
 footer{border-top:1px solid var(--line);padding:20px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;font-size:14px}
 footer button{border:0;background:none;text-decoration:underline;color:var(--mut)}
+footer:empty{display:none}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;z-index:20}
 @media(prefers-reduced-motion:no-preference){.toast{animation:t .2s}@keyframes t{from{opacity:0}}}
 </style>
@@ -110,16 +112,21 @@ footer button{border:0;background:none;text-decoration:underline;color:var(--mut
 /* ===== CONFIGURAÇÃO DA LOJA (edite aqui) ===== */
 const STORE={cnpj:"",endereco:"",telefone:"",email:""};
 const COUPONS={}; /* exemplo: "BEMVINDA10":{pct:10} */
-const CATS=["Todos","Baby Dolls","Shorts Femininos","Conjuntos","Pijamas","Moda Verão","Mais Vendidos","Ofertas"];
+const CATS=["Todos","Baby Dolls","Shorts Femininos","Conjuntos","Pijamas","Moda Verão","Sutiãs","Mais Vendidos","Ofertas"];
 /* promo: preço promocional opcional; o desconto é calculado automaticamente */
 const PRODUCTS=[
- {id:5,name:"Kit com 5 Baby Dolls",img:"file_00000000fed0820e8133906b1004d4c7.png",price:47.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Rosa-claro","Preto","Azul","Pink","Branco"],desc:"Kit com 5 baby dolls nas cores: rosa-claro, preto, azul, pink e branco. 💗"},
- {id:1,name:"Kit 3 Baby Dolls Femininos",img:"file_0000000013b8820ebdc62e39391fd960.png",price:27.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Kit com três peças para proporcionar conforto e praticidade na hora de dormir. Modelos, cores e estampas sujeitos às opções disponíveis."},
- {id:2,name:"Short Feminino de Verão",img:"file_00000000ed6c820ea83920a186dca583.png",price:23.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Short feminino leve e confortável, ideal para aproveitar os dias quentes. Consulte as estampas e os tamanhos disponíveis."},
+ {id:5,name:"Kit com 5 Baby Dolls",img:"file_00000000fed0820e8133906b1004d4c7.png",estoque:27,price:47.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Rosa-claro","Preto","Azul","Pink","Branco"],desc:"Kit com 5 baby dolls nas cores: rosa-claro, preto, azul, pink e branco. 💗"},
+ {id:1,name:"Kit 3 Baby Dolls Femininos",img:"file_0000000013b8820ebdc62e39391fd960.png",estoque:37,price:27.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Kit com três peças para proporcionar conforto e praticidade na hora de dormir. Modelos, cores e estampas sujeitos às opções disponíveis."},
+ {id:2,name:"Short Feminino de Verão",img:"file_00000000ed6c820ea83920a186dca583.png",estoque:32,price:23.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Short feminino leve e confortável, ideal para aproveitar os dias quentes. Consulte as estampas e os tamanhos disponíveis."},
  {id:3,name:"Kit 3 Baby Dolls com Short",img:"file_000000006f10820ea5d86e97d0929364.png",price:27.90,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Conjunto com três peças de dormir, pensado para oferecer conforto no dia a dia. Confira a composição do tecido, as medidas e as opções disponíveis."},
  {id:4,name:"Kit 3 Shorts Femininos Estampados",img:"file_000000007e60820eb8ddb6b17b4b0b21.png",price:20.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Kit com três shorts femininos estampados, ideal para compor looks casuais de verão. Consulte a tabela de medidas antes de comprar."},
  {id:6,name:"Conjunto de Verão Pijama Preto Liso Feminino Baby Doll",img:"file_00000000e798820e9fdedc483108b5ce.png",price:22.40,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas","Moda Verão"],sizes:["P","M","G","GG"],colors:["Preto"],desc:"Conjunto de verão pijama preto liso feminino Baby Doll."},
- {id:7,name:"Baby Doll Pijama Feminino Renda Rendado Noite Confortável",img:"file_00000000a354820ea63440e6f2d8b50e_convert.jpg",cimg:{"Azul marinho":"file_00000000a354820ea63440e6f2d8b50e_convert.jpg","Vermelho":"file_000000002b78820eae3549a0b65dcaf7_convert.jpg","Vinho":"file_000000003d28820e91973b11c90a1b45_convert.jpg"},price:20.40,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Azul marinho","Vermelho","Vinho"],desc:"Baby Doll Pijama Feminino Renda Rendado Noite Confortável."}
+ {id:7,name:"Baby Doll Pijama Feminino Renda Rendado Noite Confortável",img:"file_00000000a354820ea63440e6f2d8b50e_convert.jpg",cimg:{"Azul marinho":"file_00000000a354820ea63440e6f2d8b50e_convert.jpg","Vermelho":"file_000000002b78820eae3549a0b65dcaf7_convert.jpg","Vinho":"file_000000003d28820e91973b11c90a1b45_convert.jpg"},price:20.40,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Azul marinho","Vermelho","Vinho"],desc:"Baby Doll Pijama Feminino Renda Rendado Noite Confortável."},
+ {id:8,name:"Kit com 3 Baby Doll Short Doll Conforto Sensual Renda Luxo",img:"file_00000000ff00820eb76b4360376d5c0e_convert.jpg",price:30.90,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Kit com 3 baby doll short doll, conforto sensual em renda de luxo. Consulte as cores e os tamanhos disponíveis."},
+ {id:9,name:"Baby Doll Luxo Sensual Microfibra Pijama com Renda Decote V",img:"file_000000008b0c820e8f5b61500b262892_convert.jpg",price:23.40,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Baby Doll luxo sensual em microfibra, pijama com renda e decote V. Consulte as cores e os tamanhos disponíveis."},
+ {id:10,name:"Kit 3 Baby Doll Plus Size para Dormir Pijama Feminino",img:"file_00000000f898820eb515c4909113eeb1_convert.jpg",price:27.90,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["G1","G2","G3"],colors:["Cores disponíveis"],desc:"Kit com 3 baby dolls plus size para dormir, pijama feminino. Consulte as cores e os tamanhos disponíveis."},
+ {id:11,name:"Baby Doll Luxo Sensual Microfibra Pijama com Renda Decote V",img:"file_00000000b5c8820eb33a44c005251239_convert.jpg",price:23.40,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Baby Doll luxo sensual em microfibra, pijama com renda e decote V. Consulte as cores e os tamanhos disponíveis."},
+ {id:12,name:"Kit 3 Sutiã de Renda Alça Reforçada com Bojo Atacado Revenda",img:"file_0000000030f4820e911864175af0ba8a_convert.jpg",price:25.40,promo:null,cats:["Sutiãs"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Kit com 3 sutiãs de renda com alça reforçada e bojo. Consulte as cores e os tamanhos disponíveis."}
 ];
 const PAGES={
  conta:["Minha conta","O login de clientes será ativado quando a loja tiver banco de dados conectado."],
@@ -146,14 +153,14 @@ function priceHtml(p){if(p.price==null)return`<span class="price">Preço a defin
 function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;(dlg.open?dlg:document.body).append(t);setTimeout(()=>t.remove(),1800)}
 /* ===== VITRINE ===== */
 function go(c){cat=c;$("#q").value="";render();scrollTo({top:0,behavior:"smooth"})}
-function list(){const q=$("#q").value.trim().toLowerCase();return PRODUCTS.filter(p=>(cat==="Todos"||(cat==="Ofertas"?pct(p)>0:p.cats.includes(cat)))&&(!q||p.name.toLowerCase().includes(q)))}
+function list(){const q=$("#q").value.trim().toLowerCase();return PRODUCTS.filter(p=>(cat==="Todos"||(cat==="Ofertas"?pct(p)>0:cat==="Mais Vendidos"?!!p.maisVendido:p.cats.includes(cat)))&&(!q||p.name.toLowerCase().includes(q)))}
 function render(arr){
  $("#cats").innerHTML=CATS.map(c=>`<button class="chip" aria-pressed="${c===cat}" onclick="go('${c}')">${c}</button>`).join("");
  const a=arr||list();$("#title").textContent=arr?"Favoritos":(cat==="Todos"?"Todos os produtos":cat);
- $("#grid").innerHTML=a.map(p=>`<article class="card"><div class="ph" onclick="openP(${p.id})" style="cursor:pointer"><div><b>BellaVitta</b><br>Foto do produto</div>${pimg(p)}<button class="fav" aria-label="Favoritar" onclick="event.stopPropagation();fav(${p.id})">${favs.includes(p.id)?"♥":"♡"}</button></div><div class="info"><button class="name" onclick="openP(${p.id})">${p.name}</button><div>${priceHtml(p)}</div><button class="btn" onclick="quick(${p.id})">Adicionar ao carrinho</button></div></article>`).join("");
+ $("#grid").innerHTML=a.map(p=>`<article class="card"><div class="ph" onclick="openP(${p.id})" style="cursor:pointer"><div><b>BellaVitta</b><br>Foto do produto</div>${pimg(p)}${p.maisVendido?`<span class="tag">Mais vendido</span>`:""}<button class="fav" aria-label="Favoritar" onclick="event.stopPropagation();fav(${p.id})">${favs.includes(p.id)?"♥":"♡"}</button></div><div class="info"><button class="name" onclick="openP(${p.id})">${p.name}</button><div>${priceHtml(p)}</div>${p.estoque!=null?`<div class="note">${p.estoque>0?p.estoque+" disponíveis":"Esgotado"}</div>`:""}<button class="btn" onclick="quick(${p.id})">Adicionar ao carrinho</button></div></article>`).join("");
  $("#empty").hidden=a.length>0;
  $("#cc").textContent=cart.reduce((s,i)=>s+i.q,0);
- $("#foot").innerHTML=Object.keys(PAGES).filter(k=>k!=="conta").map(k=>`<button onclick="info('${k}')">${PAGES[k][0]}</button>`).join("");
+ $("#foot").innerHTML="";
 }
 function fav(id){favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];save();render()}
 function showFavs(){cat="Todos";render(PRODUCTS.filter(p=>favs.includes(p.id)));scrollTo({top:0,behavior:"smooth"})}
@@ -169,8 +176,7 @@ function openP(id){
  <p class="note">Tabela de medidas e composição do tecido: a loja informará aqui quando confirmadas. O frete será calculado antes do pagamento.</p>
  <div id="err" role="alert" style="color:var(--rose)"></div>
  <button class="btn" onclick="addSel(${p.id},false)">Adicionar ao carrinho</button>
- <button class="btn alt" onclick="addSel(${p.id},true)">Comprar agora</button>
- <p class="note">Pagamento e devolução: veja Trocas, Devoluções e Reembolsos no rodapé.</p>`);
+ <button class="btn alt" onclick="addSel(${p.id},true)">Comprar agora</button>`);
 }
 function pick(b,s){$("#sz").value=s;document.querySelectorAll(".sz").forEach(x=>x.setAttribute("aria-pressed",x===b))}
 function pickC(b,v,id){$("#co").value=v;document.querySelectorAll(".cc").forEach(x=>x.setAttribute("aria-pressed",x===b));const p=PRODUCTS.find(x=>x.id===id);if(p&&p.cimg&&p.cimg[v]){const h=document.querySelector("#dbody>.ph");if(h)h.outerHTML=ph({...p,img:p.cimg[v]})}}
@@ -178,6 +184,7 @@ function quick(id){openP(id)}
 function addSel(id,buy){
  const s=$("#sz").value,c=$("#co").value,q=Math.max(1,parseInt($("#qt").value)||1);
  if(PRODUCTS.find(x=>x.id===id).price==null){$("#err").textContent="O preço deste produto ainda não foi definido pela loja.";return}
+ {const pp=PRODUCTS.find(x=>x.id===id);if(pp.estoque!=null&&q>pp.estoque){$("#err").textContent=pp.estoque>0?"Temos apenas "+pp.estoque+" disponíveis.":"Produto esgotado.";return}}
  if(!s||!c){const e=$("#err");e.textContent=!s?"Escolha um tamanho para continuar.":"Escolha a cor ou estampa.";e.scrollIntoView({block:"center"});return}
  const f=cart.find(i=>i.id===id&&i.s===s&&i.c===c);f?f.q+=q:cart.push({id,s,c,q});
  save();render();toast("Adicionado ao carrinho");buy?checkout():dlg.close();
@@ -226,6 +233,7 @@ function checkout(){
  </section>
  <section class="cs"><h4>2. Endereço de entrega</h4>
   ${fld("cep","CEP",`inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" oninput="inp(this,'cep');cepChange()"`)}
+  <div class="note" id="cepmsg"></div>
   ${fld("rua","Rua ou avenida")}
   <div class="g2">${fld("num","Número",'inputmode="numeric" maxlength="8"')}${fld("comp","Complemento (opcional)")}</div>
   ${fld("bai","Bairro")}
@@ -262,8 +270,15 @@ function showShip(){
  upd();
 }
 async function fillCep(c){
- try{const r=await fetch(`https://viacep.com.br/ws/${c}/json/`);const d=await r.json();if(d.erro||dg(ck.cep)!==c)return;
- [["rua",d.logradouro],["bai",d.bairro],["cid",d.localidade],["uf",d.uf]].forEach(([k,v])=>{const e=$("#"+k);if(e&&v&&!e.value){e.value=v;ck[k]=v}})}catch(e){}
+ const m=$("#cepmsg");if(m)m.textContent="Buscando endereço…";
+ let d=null;
+ try{const r=await fetch(`https://viacep.com.br/ws/${c}/json/`);const j=await r.json();if(!j.erro)d={rua:j.logradouro,bai:j.bairro,cid:j.localidade,uf:j.uf}}catch(e){}
+ if(!d){try{const r=await fetch(`https://brasilapi.com.br/api/cep/v1/${c}`);const j=await r.json();if(j.city)d={rua:j.street,bai:j.neighborhood,cid:j.city,uf:j.state}}catch(e){}}
+ if(dg(ck.cep)!==c)return;
+ if(!d){if(m)m.textContent="Não foi possível buscar o endereço. Preencha cidade e estado manualmente.";return}
+ Object.entries(d).forEach(([k,v])=>{const e=$("#"+k);if(e&&v){e.value=v;ck[k]=v}});
+ if(m)m.textContent="Endereço encontrado. Confira e informe o número.";
+ const n=$("#num");if(n&&!n.value)n.focus();
 }
 function pay(){
  grab();let e="";
