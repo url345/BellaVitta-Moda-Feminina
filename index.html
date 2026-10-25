@@ -118,7 +118,8 @@ const PRODUCTS=[
  {id:2,name:"Short Feminino de Verão",img:"file_00000000ed6c820ea83920a186dca583.png",price:23.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Short feminino leve e confortável, ideal para aproveitar os dias quentes. Consulte as estampas e os tamanhos disponíveis."},
  {id:3,name:"Kit 3 Baby Dolls com Short",img:"file_000000006f10820ea5d86e97d0929364.png",price:27.90,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas"],sizes:["P","M","G","GG"],colors:["Cores disponíveis"],desc:"Conjunto com três peças de dormir, pensado para oferecer conforto no dia a dia. Confira a composição do tecido, as medidas e as opções disponíveis."},
  {id:4,name:"Kit 3 Shorts Femininos Estampados",img:"file_000000007e60820eb8ddb6b17b4b0b21.png",price:20.90,promo:null,cats:["Shorts Femininos","Moda Verão"],sizes:["P","M","G","GG"],colors:["Estampas disponíveis"],desc:"Kit com três shorts femininos estampados, ideal para compor looks casuais de verão. Consulte a tabela de medidas antes de comprar."},
- {id:6,name:"Conjunto de Verão Pijama Preto Liso Feminino Baby Doll",img:"file_00000000e798820e9fdedc483108b5ce.png",price:22.40,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas","Moda Verão"],sizes:["P","M","G","GG"],colors:["Preto"],desc:"Conjunto de verão pijama preto liso feminino Baby Doll."}
+ {id:6,name:"Conjunto de Verão Pijama Preto Liso Feminino Baby Doll",img:"file_00000000e798820e9fdedc483108b5ce.png",price:22.40,promo:null,cats:["Baby Dolls","Conjuntos","Pijamas","Moda Verão"],sizes:["P","M","G","GG"],colors:["Preto"],desc:"Conjunto de verão pijama preto liso feminino Baby Doll."},
+ {id:7,name:"Baby Doll Pijama Feminino Renda Rendado Noite Confortável",img:"file_00000000a354820ea63440e6f2d8b50e_convert.jpg",cimg:{"Azul marinho":"file_00000000a354820ea63440e6f2d8b50e_convert.jpg","Vermelho":"file_000000002b78820eae3549a0b65dcaf7_convert.jpg","Vinho":"file_000000003d28820e91973b11c90a1b45_convert.jpg"},price:20.40,promo:null,cats:["Baby Dolls","Pijamas"],sizes:["P","M","G","GG"],colors:["Azul marinho","Vermelho","Vinho"],desc:"Baby Doll Pijama Feminino Renda Rendado Noite Confortável."}
 ];
 const PAGES={
  conta:["Minha conta","O login de clientes será ativado quando a loja tiver banco de dados conectado."],
@@ -163,7 +164,7 @@ function openP(id){
  const p=PRODUCTS.find(x=>x.id===id);
  show(`${ph(p)}<h3>${p.name}</h3><div>${priceHtml(p)}</div><p>${p.desc}</p>
  <div>Tamanho</div><input type="hidden" id="sz"><div class="sizes">${p.sizes.map(s=>`<button type="button" class="chip sz" aria-pressed="false" onclick="pick(this,'${s}')">${s}</button>`).join("")}</div>
- <div>Cor / estampa</div><input type="hidden" id="co" value="${p.colors.length==1?p.colors[0]:""}"><div class="sizes">${p.colors.map(s=>`<button type="button" class="chip cc" aria-pressed="${p.colors.length==1}" onclick="pickC(this,'${s}')">${s}</button>`).join("")}</div>
+ <div>Cor / estampa</div><input type="hidden" id="co" value="${p.colors.length==1?p.colors[0]:""}"><div class="sizes">${p.colors.map(s=>`<button type="button" class="chip cc" aria-pressed="${p.colors.length==1}" onclick="pickC(this,'${s}',${p.id})">${s}</button>`).join("")}</div>
  <label>Quantidade<input class="f" id="qt" type="number" min="1" value="1"></label>
  <p class="note">Tabela de medidas e composição do tecido: a loja informará aqui quando confirmadas. O frete será calculado antes do pagamento.</p>
  <div id="err" role="alert" style="color:var(--rose)"></div>
@@ -172,7 +173,7 @@ function openP(id){
  <p class="note">Pagamento e devolução: veja Trocas, Devoluções e Reembolsos no rodapé.</p>`);
 }
 function pick(b,s){$("#sz").value=s;document.querySelectorAll(".sz").forEach(x=>x.setAttribute("aria-pressed",x===b))}
-function pickC(b,v){$("#co").value=v;document.querySelectorAll(".cc").forEach(x=>x.setAttribute("aria-pressed",x===b))}
+function pickC(b,v,id){$("#co").value=v;document.querySelectorAll(".cc").forEach(x=>x.setAttribute("aria-pressed",x===b));const p=PRODUCTS.find(x=>x.id===id);if(p&&p.cimg&&p.cimg[v]){const h=document.querySelector("#dbody>.ph");if(h)h.outerHTML=ph({...p,img:p.cimg[v]})}}
 function quick(id){openP(id)}
 function addSel(id,buy){
  const s=$("#sz").value,c=$("#co").value,q=Math.max(1,parseInt($("#qt").value)||1);
