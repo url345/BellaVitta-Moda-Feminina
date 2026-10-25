@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
   const ci = process.env.ANOVAPAY_CLIENT_ID;
   const cs = process.env.ANOVAPAY_CLIENT_SECRET;
-  const unit = process.env.AMOUNT_UNIT;
+  const unit = process.env.AMOUNT_UNIT || "reais";
   if (!ci || !cs) return res.status(500).json({ erro: "Pix ainda não configurado no servidor." });
   if (unit !== "reais" && unit !== "centavos")
     return res.status(500).json({ erro: "Configure AMOUNT_UNIT como reais ou centavos." });
