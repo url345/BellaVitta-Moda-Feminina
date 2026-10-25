@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -58,6 +57,17 @@ h2{font-size:22px;margin:20px 0 12px}
 .calc{display:flex;gap:10px;align-items:center;color:var(--mut)}
 .spin{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--rose);border-radius:50%;display:inline-block}
 @media(prefers-reduced-motion:no-preference){.spin{animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}}
+.pxhero{background:var(--pink);border-radius:14px;padding:16px;text-align:center}
+.pxhero small{display:block;color:var(--mut)}
+.pxhero .amt{font-size:34px;font-weight:600;line-height:1.2}
+.badge2{display:inline-block;margin-top:8px;background:var(--card);border:1px solid var(--rose);color:var(--rose);border-radius:999px;padding:3px 12px;font-size:13px}
+.qrbox{background:#fff;border-radius:12px;padding:12px;display:grid;place-items:center;border:1px solid var(--line)}
+.qrbox img{width:100%;max-width:260px}
+.stp{display:flex;gap:10px;align-items:flex-start}
+.stp i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff;font-style:normal;font-size:13px;display:grid;place-items:center}
+details.sum summary{cursor:pointer;font-weight:500}
+details.sum .row{margin-top:8px}
+.lock{text-align:center;font-size:13px;color:var(--mut)}
 .empty{color:var(--mut);padding:24px 0}
 dialog{border:0;border-radius:14px;padding:0;width:min(520px,calc(100% - 24px));max-height:90dvh;background:var(--bg);color:var(--fg)}
 dialog::backdrop{background:rgba(0,0,0,.45)}
@@ -314,14 +324,17 @@ async function pay(){
  }finally{paying=false}
 }
 function showPix(d){
- show(`<h3>Pague com Pix</h3>
- <div class="row"><span>Pedido ${esc(d.ref)}</span><b class="price">${R(d.total)}</b></div>
- ${d.qr?`<img src="${d.qr}" alt="QR Code Pix" style="width:100%;max-width:280px;margin:auto">`:""}
- ${d.brCode?`<textarea readonly id="br" class="f" rows="4">${esc(d.brCode)}</textarea><button class="btn" onclick="copyBr()">Copiar código Pix</button>`:`<p>A cobrança foi criada, mas o código Pix não veio do gateway. Fale com a loja informando o pedido ${esc(d.ref)}.</p>`}
- <p class="note">Aguardando o pagamento. A confirmação automática ainda não está ligada, então este pedido ainda não aparece como pago.</p>
+ const items=cart.map(i=>{const p=PRODUCTS.find(x=>x.id===i.id);return`<div class="row"><span>${i.q}× ${p.name} <span class="note">${i.s} · ${i.c}</span></span><b>${R(cur(p)*i.q)}</b></div>`}).join("");
+ const sh=SHIPPING[ck.ship==null?0:ck.ship];
+ show(`<div class="pxhero"><small>Total a pagar</small><div class="amt">${R(d.total)}</div><span class="badge2">⏳ Aguardando pagamento · Pedido #${esc(d.ref)}</span></div>
+ ${d.qr?`<section class="cs"><div class="stp"><i>1</i><div><b>Escaneie o QR Code</b><div class="note">Abra o app do seu banco, escolha Pix e leia o código.</div></div></div><div class="qrbox"><img src="${d.qr}" alt="QR Code Pix"></div></section>`:""}
+ ${d.brCode?`<section class="cs"><div class="stp"><i>${d.qr?2:1}</i><div><b>Ou use o Pix copia e cola</b><div class="note">Copie o código, abra o app do banco e escolha Pix copia e cola.</div></div></div><input class="f" readonly id="br" value="${esc(d.brCode)}" aria-label="Código Pix copia e cola"><button class="btn" onclick="copyBr(this)">Copiar código Pix</button></section>`:`<section class="cs"><p>A cobrança foi criada, mas o código Pix não veio do gateway. Fale com a loja informando o pedido #${esc(d.ref)}.</p></section>`}
+ <details class="cs sum"><summary>Resumo da compra</summary>${items}<div class="row"><span>Frete${sh?" · "+sh.prazo:""}</span><b>${R(sh?sh.preco:0)}</b></div><div class="row"><span>Total</span><b>${R(d.total)}</b></div><div class="note" style="margin-top:8px">Entrega para ${esc(ck.rua)}, ${esc(ck.num)}${ck.comp?" – "+esc(ck.comp):""}, ${esc(ck.bai)}, ${esc(ck.cid)}/${esc((ck.uf||"").toUpperCase())}</div></details>
+ <div class="lock">🔒 Pagamento via Pix</div>
+ <p class="note" style="text-align:center">Guarde o comprovante. A confirmação automática do pagamento ainda não está ligada.</p>
  <button class="btn out" onclick="dlg.close()">Fechar</button>`);
 }
-function copyBr(){const t=$("#br");try{navigator.clipboard.writeText(t.value).then(()=>toast("Código copiado"))}catch(e){t.select();toast("Selecione e copie o código")}}
+function copyBr(b){const t=$("#br");const ok=()=>{if(b)b.textContent="Código copiado ✓";toast("Código copiado")};try{navigator.clipboard.writeText(t.value).then(ok)}catch(e){t.select();toast("Selecione e copie o código")}}
 render();
 </script>
 </body>
