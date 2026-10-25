@@ -190,7 +190,7 @@ function addSel(id,buy){
  save();render();toast("Adicionado ao carrinho");buy?checkout():dlg.close();
 }
 /* ===== CARRINHO ===== */
-let coupon=null;
+let coupon=null,couponCode="";
 function openCart(){
  if(!cart.length){show(`<h3>Carrinho</h3><p class="empty">Seu carrinho está vazio.</p><button class="btn" onclick="dlg.close()">Continuar comprando</button>`);return}
  let sub=0;
@@ -206,7 +206,7 @@ function openCart(){
  <button class="btn out" onclick="dlg.close()">Continuar comprando</button>`);
 }
 function chg(n,d){cart[n].q+=d;if(cart[n].q<1)cart.splice(n,1);save();render();openCart()}
-function applyC(){const c=COUPONS[$("#cp").value.trim().toUpperCase()];if(!c){toast("Cupom inválido");return}coupon=c;openCart();toast("Cupom aplicado")}
+function applyC(){const c=COUPONS[$("#cp").value.trim().toUpperCase()];if(!c){toast("Cupom inválido");return}coupon=c;couponCode=$("#cp").value.trim().toUpperCase();openCart();toast("Cupom aplicado")}
 const SHIPPING=[{nome:"Frete fixo",transp:"",preco:9,prazo:"5 a 10 dias"}]; /* ex.: {nome:"SEDEX",transp:"Correios",preco:25,prazo:"3 a 5 dias úteis"} */
 let ck={ship:SHIPPING.length?0:null,ready:false},tm;
 const dg=s=>(s||"").replace(/\D/g,"");
@@ -280,7 +280,8 @@ async function fillCep(c){
  if(m)m.textContent="Endereço encontrado. Confira e informe o número.";
  const n=$("#num");if(n&&!n.value)n.focus();
 }
-function pay(){
+let paying=false,lastCharge=null;
+async function pay(){
  grab();let e="";
  if(ck.nm.split(" ").filter(Boolean).length<2)e="Informe nome e sobrenome.";
  else if(!cpfOk(ck.cpf))e="CPF inválido.";
@@ -291,9 +292,35 @@ function pay(){
  else if(!/^[A-Za-z]{2}$/.test(ck.uf))e="Informe o estado com 2 letras.";
  else if(!ck.ready)e="Aguarde o cálculo da entrega.";
  const el=$("#err");el.style.color=e?"var(--rose)":"var(--fg)";
- el.textContent=e||"O Pix ainda não está conectado a um gateway de pagamento. Nenhum pedido foi criado e nenhuma cobrança foi feita.";
- el.scrollIntoView({block:"center"});
+ if(e){el.textContent=e;el.scrollIntoView({block:"center"});return}
+ if(paying)return;
+ const key=JSON.stringify([cart,ck.cpf,ck.cep,couponCode]);
+ if(lastCharge&&lastCharge.key===key){showPix(lastCharge.d);return}
+ paying=true;const btn=document.querySelector("#dbody .btn:not(.out)");if(btn){btn.disabled=true;btn.textContent="Gerando Pix…"}
+ el.textContent="";
+ try{
+  const r=await fetch("/api/charge",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+   cliente:{nome:ck.nm,cpf:ck.cpf,tel:ck.tel,email:ck.em},
+   endereco:{cep:ck.cep,rua:ck.rua,num:ck.num,comp:ck.comp,bai:ck.bai,cid:ck.cid,uf:ck.uf.toUpperCase(),ref:ck.ref},
+   items:cart.map(i=>({id:i.id,q:i.q,s:i.s,c:i.c})),cupom:couponCode})});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.erro||"Falha ao gerar o Pix.");
+  lastCharge={key,d};showPix(d);
+ }catch(err){
+  el.style.color="var(--rose)";
+  el.textContent=(err&&err.message&&err.message!=="Failed to fetch"?err.message:"Não foi possível gerar o Pix agora. Tente novamente em instantes.");
+  if(btn){btn.disabled=false;btn.textContent="Pagar com Pix"}
+ }finally{paying=false}
 }
+function showPix(d){
+ show(`<h3>Pague com Pix</h3>
+ <div class="row"><span>Pedido ${esc(d.ref)}</span><b class="price">${R(d.total)}</b></div>
+ ${d.qr?`<img src="${d.qr}" alt="QR Code Pix" style="width:100%;max-width:280px;margin:auto">`:""}
+ ${d.brCode?`<textarea readonly id="br" class="f" rows="4">${esc(d.brCode)}</textarea><button class="btn" onclick="copyBr()">Copiar código Pix</button>`:`<p>A cobrança foi criada, mas o código Pix não veio do gateway. Fale com a loja informando o pedido ${esc(d.ref)}.</p>`}
+ <p class="note">Aguardando o pagamento. A confirmação automática ainda não está ligada, então este pedido ainda não aparece como pago.</p>
+ <button class="btn out" onclick="dlg.close()">Fechar</button>`);
+}
+function copyBr(){const t=$("#br");try{navigator.clipboard.writeText(t.value).then(()=>toast("Código copiado"))}catch(e){t.select();toast("Selecione e copie o código")}}
 render();
 </script>
 </body>
